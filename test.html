@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Information Modal</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Button 1 to Trigger the Modal and Set Hidden Field Value -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectModal" data-hidden-value="Option 1">
+    Open Project Modal (Option 1)
+</button>
+
+<!-- Button 2 to Trigger the Modal and Set Hidden Field Value -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectModal" data-hidden-value="Option 2">
+    Open Project Modal (Option 2)
+</button>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="projectModalLabel">Project Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Hidden Input Field for Storing the Value -->
+                <input type="hidden" id="hiddenValue" name="hiddenValue" value="">
+
+                <!-- Project Information Form -->
+                <form id="projectForm">
+                    <div class="form-group">
+                        <label for="location">Location:</label>
+                        <input type="text" class="form-control" id="location" name="location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Project Duration (in months):</label>
+                        <input type="number" class="form-control" id="duration" name="duration" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget (above $5000):</label>
+                        <input type="number" class="form-control" id="budget" name="budget" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Expected Start Date (in the future):</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap and jQuery JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- JavaScript to Set Hidden Field Value and Validate the Form -->
+<script>
+    $(document).ready(function () {
+        // Set the hidden input field value when a button is clicked
+        $('[data-toggle="modal"]').click(function () {
+            var hiddenValue = $(this).data('hidden-value');
+            $('#hiddenValue').val(hiddenValue);
+        });
+
+        // Handle form submission
+        $("#projectForm").submit(function (event) {
+            event.preventDefault(); // Prevent the form from submitting traditionally
+
+            // Validation
+            var startDate = new Date($('#startDate').val());
+            var currentDate = new Date();
+            var budget = parseFloat($('#budget').val());
+
+            if (startDate <= currentDate) {
+                alert("Please select a future date for the project start.");
+                return;
+            }
+
+            if (budget <= 5000 || isNaN(budget)) {
+                alert("Budget must be a number greater than $5000.");
+                return;
+            }
+
+            // If the form passes validation, you can proceed with form submission logic here
+            // Replace the following line with your actual submission logic
+            alert("Form submitted. Data: " + JSON.stringify($(this).serialize()));
+            // Close the modal
+            $("#projectModal").modal('hide');
+        });
+    });
+</script>
+
+</body>
+</html>
